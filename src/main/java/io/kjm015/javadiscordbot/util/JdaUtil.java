@@ -1,5 +1,6 @@
 package io.kjm015.javadiscordbot.util;
 
+import io.kjm015.javadiscordbot.listeners.ReadyListener;
 import io.kjm015.javadiscordbot.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -20,7 +21,10 @@ public class JdaUtil {
         String token = System.getenv("DISCORD_TOKEN");
 
         var jda = JDABuilder.createLight(token, Collections.emptyList())
-                .addEventListeners(new SlashCommandListener())
+                .addEventListeners(
+                        new SlashCommandListener(),
+                        new ReadyListener()
+                )
                 .build();
 
         // Register your commands to make them visible globally on Discord:
