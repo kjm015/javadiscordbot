@@ -1,10 +1,12 @@
 package io.kjm015.javadiscordbot.util;
 
+import io.kjm015.javadiscordbot.listeners.MessageListener;
 import io.kjm015.javadiscordbot.listeners.ReadyListener;
 import io.kjm015.javadiscordbot.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -20,10 +22,13 @@ public class JdaUtil {
     public JDA jda() {
         String token = System.getenv("DISCORD_TOKEN");
 
-        var jda = JDABuilder.createLight(token, Collections.emptyList())
+        var jda = JDABuilder
+                .createDefault(token)
+                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(
                         new SlashCommandListener(),
-                        new ReadyListener()
+                        new ReadyListener(),
+                        new MessageListener()
                 )
                 .build();
 
