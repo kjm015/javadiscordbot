@@ -28,17 +28,15 @@ public class JdaUtil {
                         .build();
 
         // Register your commands to make them visible globally on Discord:
-        var commands = jda.updateCommands();
-
-        // Add all your commands on this action instance
-        commands.addCommands(
-                Commands.slash("say", "Makes the bot say what you tell it to")
-                        .addOption(
-                                STRING,
-                                "content",
-                                "What the bot should say",
-                                true) // Accepting a user input
-                );
+        var commands =
+                jda.updateCommands()
+                        .addCommands(
+                                Commands.slash("say", "Makes the bot say what you tell it to")
+                                        .addOption(
+                                                STRING,
+                                                "content",
+                                                "What the bot should say",
+                                                true));
 
         // Then finally send your commands to discord using the API
         commands.queue();
