@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "4.0.0"
 	id("io.spring.dependency-management") version "1.1.7"
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 group = "io.kjm015"
@@ -31,4 +32,20 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+spotless {
+    format("misc") {
+        target("*.gradle", "*.md", ".gitignore")
+        trimTrailingWhitespace()
+        leadingSpacesToTabs()
+        endWithNewline()
+    }
+
+    java {
+        // apply a specific flavor of google-java-format
+        googleJavaFormat("1.32.0").aosp().skipJavadocFormatting()
+        // fix formatting of type annotations
+        formatAnnotations()
+    }
 }

@@ -1,12 +1,11 @@
 package io.kjm015.javadiscordbot.listeners;
 
+import java.util.Objects;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 public class SlashCommandListener extends ListenerAdapter {
 
@@ -18,8 +17,10 @@ public class SlashCommandListener extends ListenerAdapter {
         if (event.getName().equals("say")) {
             String content = event.getOption("content", OptionMapping::getAsString);
             log.info("Received command: /say {}", content);
-            event.reply(Objects.requireNonNullElse(content, "You need to provide a message to say!")).queue();
+            event.reply(
+                            Objects.requireNonNullElse(
+                                    content, "You need to provide a message to say!"))
+                    .queue();
         }
-
     }
 }

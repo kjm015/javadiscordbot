@@ -20,13 +20,23 @@ public class MessageListener extends ListenerAdapter {
 
         if (content.equalsIgnoreCase("ping")) {
             var channel = event.getChannel();
-            channel.sendMessage("pong").queue(); // Important to call .queue() on the RestAction returned by sendMessage(...)
+            channel.sendMessage("pong")
+                    .queue(); // Important to call .queue() on the RestAction returned by
+            // sendMessage(...)
         }
 
         if (event.isFromType(ChannelType.PRIVATE)) {
-            log.info("[PM] {}: {}", event.getAuthor().getName(), event.getMessage().getContentDisplay());
+            log.info(
+                    "[PM] {}: {}",
+                    event.getAuthor().getName(),
+                    event.getMessage().getContentDisplay());
         } else {
-            log.info("[{}][{}] {}: {}", event.getGuild().getName(), event.getChannel().getName(), event.getMember().getEffectiveName(), event.getMessage().getContentDisplay());
+            log.info(
+                    "[{}][{}] {}: {}",
+                    event.getGuild().getName(),
+                    event.getChannel().getName(),
+                    event.getMember().getEffectiveName(),
+                    event.getMessage().getContentDisplay());
         }
     }
 }
