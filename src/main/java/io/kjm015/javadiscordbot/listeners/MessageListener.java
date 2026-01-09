@@ -1,5 +1,6 @@
 package io.kjm015.javadiscordbot.listeners;
 
+import java.util.Objects;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -20,9 +21,7 @@ public class MessageListener extends ListenerAdapter {
 
         if (content.equalsIgnoreCase("ping")) {
             var channel = event.getChannel();
-            channel.sendMessage("pong")
-                    .queue(); // Important to call .queue() on the RestAction returned by
-            // sendMessage(...)
+            channel.sendMessage("pong").queue();
         }
 
         if (event.isFromType(ChannelType.PRIVATE)) {
@@ -35,7 +34,7 @@ public class MessageListener extends ListenerAdapter {
                     "[{}][{}] {}: {}",
                     event.getGuild().getName(),
                     event.getChannel().getName(),
-                    event.getMember().getEffectiveName(),
+                    Objects.requireNonNull(event.getMember()).getEffectiveName(),
                     event.getMessage().getContentDisplay());
         }
     }
