@@ -1,15 +1,13 @@
 package io.kjm015.javadiscordbot.listeners;
 
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class MessageListener extends ListenerAdapter {
-
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

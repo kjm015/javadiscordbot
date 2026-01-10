@@ -5,23 +5,19 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 import io.kjm015.javadiscordbot.listeners.MessageListener;
 import io.kjm015.javadiscordbot.listeners.ReadyListener;
 import io.kjm015.javadiscordbot.listeners.SlashCommandListener;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JdaUtil {
 
     private final SlashCommandListener slashCommandListener;
-
-    @Autowired
-    public JdaUtil(SlashCommandListener slashCommandListener) {
-        this.slashCommandListener = slashCommandListener;
-    }
 
     @Bean
     public JDA jda() {
@@ -37,12 +33,13 @@ public class JdaUtil {
         var commands =
                 jda.updateCommands()
                         .addCommands(
+                                Commands.slash("ping", "Replies with Pong!").setName("ping"),
                                 Commands.slash("say", "Makes the bot say what you tell it to")
+                                        .setName("say")
                                         .addOption(
-                                                STRING,
-                                                "content",
-                                                "What the bot should say",
-                                                true));
+                                                STRING, "content", "What the bot should say", true),
+                                Commands.slash("stats", "Display stats about executed bot commands")
+                                        .setName("stats"));
 
         // Then finally send your commands to discord using the API
         commands.queue();
