@@ -1,6 +1,7 @@
 package io.kjm015.javadiscordbot.listeners;
 
 import io.kjm015.javadiscordbot.services.CommandsEventService;
+import io.kjm015.javadiscordbot.services.LyricsService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +16,16 @@ import org.springframework.stereotype.Component;
 public class SlashCommandListener extends ListenerAdapter {
 
     private final CommandsEventService commandsEventService;
+    private final LyricsService lyricsService;
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 
-        if (event.getName().equals("say")) {
-            handleSayCommand(event);
-        } else if (event.getName().equals("stats")) {
-            handleStatsCommand(event);
-        } else if (event.getName().equals("ping")) {
-            event.reply("pong").queue();
+        switch (event.getName()) {
+            case "say" -> handleSayCommand(event);
+            case "stats" -> handleStatsCommand(event);
+            case "ping" -> handlePingCommand(event);
+            case "lyrics" -> handleLyricsCommand(event);
         }
     }
 
@@ -46,5 +47,25 @@ public class SlashCommandListener extends ListenerAdapter {
         event.reply(reply).queue();
 
         commandsEventService.saveCommandEvent("stats", "", event.getUser().getName());
+    }
+
+    private void handlePingCommand(SlashCommandInteractionEvent event) {
+        event.reply("pong").queue();
+        commandsEventService.saveCommandEvent("ping", "", event.getUser().getName());
+    }
+
+    private void handleLyricsCommand(SlashCommandInteractionEvent event) {
+        var content = event.getOption("song", OptionMapping::getAsString);
+        log.info("Received command: /lyrics {}", content);
+
+        var lyrics = lyricsService.getLyrics(content);
+
+        if (lyrics != null) {
+            event.reply(lyrics.getContent()).queue();
+        } else {
+            event.reply(String.format("I couldn't find any lyrics for \"%s\"!", content)).queue();
+        }
+
+        commandsEventService.saveCommandEvent("lyrics", content, event.getUser().getName());
     }
 }

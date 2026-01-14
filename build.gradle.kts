@@ -18,11 +18,13 @@ java {
 
 repositories {
 	mavenCentral()
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-restclient")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation("com.github.jagrosh:JLyrics:master-SNAPSHOT")
 	testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")

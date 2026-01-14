@@ -21,6 +21,7 @@ public class JdaUtil {
 
     @Bean
     public JDA jda() {
+        // Set up your Discord app token as an environment variable
         var token = System.getenv("DISCORD_TOKEN");
         var jda =
                 JDABuilder.createDefault(token)
@@ -29,10 +30,18 @@ public class JdaUtil {
                                 slashCommandListener, new ReadyListener(), new MessageListener())
                         .build();
 
+        // Restart your Discord client to get these to show up in the command list
         // Register your commands to make them visible globally on Discord:
         var commands =
                 jda.updateCommands()
                         .addCommands(
+                                Commands.slash("lyrics", "Gets lyrics for a song!")
+                                        .setName("lyrics")
+                                        .addOption(
+                                                STRING,
+                                                "song",
+                                                "The song that you want lyrics for",
+                                                true),
                                 Commands.slash("ping", "Replies with Pong!").setName("ping"),
                                 Commands.slash("say", "Makes the bot say what you tell it to")
                                         .setName("say")
